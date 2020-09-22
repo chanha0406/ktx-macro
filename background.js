@@ -19,7 +19,7 @@ const sendTelegramMessage = () => {
         return;
     }
 
-    const msg = encodeURI('예약을 시도하였습니다. 예약을 확인해주세요.');
+    const msg = encodeURI('KTX 예약을 시도하였습니다. 예약을 확인해주세요.');
     const url = `https://api.telegram.org/bot${botToken}/sendmessage?chat_id=${chatId}&text=${msg}`;
 
     fetch(url);
