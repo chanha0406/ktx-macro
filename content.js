@@ -1,6 +1,6 @@
 let uid = 1;
-const MAIN_URI = "http://www.letskorail.com/ebizprd/EbizPrdTicketPr21111_i1.do";
-const LOGIN_PAGE_URI = "http://www.letskorail.com/korail/com/login.do";
+const MAIN_URI = "https://www.letskorail.com/ebizprd/EbizPrdTicketPr21111_i1.do";
+const LOGIN_PAGE_URI = "https://www.letskorail.com/korail/com/login.do";
 
 const createCheckbox = () => {
   const $rows = document.querySelectorAll("#tableResult > tbody > tr");
@@ -15,6 +15,9 @@ const createCheckbox = () => {
       .insertAdjacentHTML("beforeend", getCheckboxTemplate(uid++));
     $row
       .querySelector("td:nth-child(6)")
+      .insertAdjacentHTML("beforeend", getCheckboxTemplate(uid++));
+    $row
+      .querySelector("td:nth-child(10)")
       .insertAdjacentHTML("beforeend", getCheckboxTemplate(uid++));
   });
 };
@@ -38,12 +41,12 @@ const getCheckboxTemplate = uid => {
   }
 
   return `
-    <label>
-      <input type="checkbox" class="ktx-macro-checkbox" value="${uid}" ${isChecked(
-    uid
-  ) && "checked"}>
-    매크로
-  </label>
+    <div>
+      <label>
+        <input type="checkbox" class="ktx-macro-checkbox" value="${uid}" ${isChecked(uid) && "checked"}>
+        매크로
+      </label>
+    </div>
   `;
 };
 
@@ -145,6 +148,19 @@ const macro = () => {
         break;
       }
     }
+
+    if (isChecked(++uid)) {
+      $row.querySelector("td:nth-child(10)").style.backgroundColor = "#f03e3e";
+      const $button = $row.querySelector("td:nth-child(10)")
+                          .querySelector('[src="/docs/2007/img/common/icon_wait.gif"]');
+
+      if ($button) {
+        $button.closest("a").click();
+        localStorage.removeItem("macro");
+        chrome.extension.sendMessage({ type: "successTicketing" });
+        break;
+      }
+    }
   }
 
   setTimeout(reload, 1000);
@@ -191,9 +207,9 @@ const saveCheckboxState = () => {
   document.querySelector(".btn_inq").insertAdjacentHTML(
     "beforeend",
     `
-        <button type="button" class="ktx-macro-button">${
-          isStarted ? "자동 예매 정지" : "자동 예매 시작"
-        }</button>
+      <button type="button" class="ktx-macro-button">
+        ${isStarted ? "자동 예매 정지" : "자동 예매 시작"}
+      </button>
     `
   );
 
