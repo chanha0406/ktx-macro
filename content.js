@@ -213,7 +213,7 @@ const macro = () => {
 
 const reload = () => {
     // document.querySelector(".btn_inq > a").click();
-    inqSchedule();
+    setTimeout(inqSchedule, 500);
 };
 
 const saveCheckboxState = () => {
