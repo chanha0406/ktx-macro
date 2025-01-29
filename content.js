@@ -207,13 +207,13 @@ const macro = () => {
             }
         }
         // inqSchedule();
-        reload();
+        setTimeout(reload, 500);
     });
 };
 
 const reload = () => {
-    // document.querySelector(".btn_inq > a").click();
-    setTimeout(inqSchedule, 500);
+    document.querySelector(".btn_inq > a").click();
+    // setTimeout(inqSchedule, 500);
 };
 
 const saveCheckboxState = () => {
